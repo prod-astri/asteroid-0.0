@@ -1,7 +1,7 @@
 import Sketch from 'react-p5'
 
 export default function GameBox() {
-    const N = 7;
+    const N = 6;
     const RANDOM_INITIAL_RANGE = 100;
     const MATRIX_LENGTH = Math.pow(2, N) + 1;
 
@@ -30,17 +30,17 @@ export default function GameBox() {
     }
 
     function assignColor(heightValue) {
-        if (heightValue > 98) return 'white'
-        if (heightValue > 90) return 'saddlebrown'
-        if (heightValue > 80) return 'peru'
-        if (heightValue > 60) return 'burlywood'
+        if (heightValue > 130) return 'white'
+        if (heightValue > 110) return 'saddlebrown'
+        if (heightValue > 90) return 'peru'
+        if (heightValue > 70) return 'burlywood'
         if (heightValue > 40) return 'beige'
         if (heightValue > 20) return 'lightgreen'
         if (heightValue > 0) return 'lightyellow'
-        if (heightValue > -20) return 'aliceblue'
-        if (heightValue > -40) return 'cyan'
-        if (heightValue > -60) return 'darkcyan'
-        if (heightValue > -80) return 'darkblue'
+        if (heightValue > -10) return 'aliceblue'
+        if (heightValue > -30) return 'cyan'
+        if (heightValue > -50) return 'darkcyan'
+        if (heightValue > -70) return 'darkblue'
         return 'black'
     }
 
