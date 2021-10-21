@@ -1,13 +1,13 @@
 import Sketch from 'react-p5'
 
 export default function GameBox() {
-    const N = 6;
+    const N = 8;
     const RANDOM_INITIAL_RANGE = 100;
     const MATRIX_LENGTH = Math.pow(2, N) + 1;
 
     const heightMatrix = diamondSquare(generateMatrix())
     console.log(heightMatrix)
-    let matrixUnit = 10;
+    let matrixUnit = 1;
 
     const setup = (p5, canvasParentRef) => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef)
