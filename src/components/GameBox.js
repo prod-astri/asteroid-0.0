@@ -1,65 +1,25 @@
 import Sketch from 'react-p5'
 
-export default function GameBox(){
-    const heightMatrix = 
-    [
-      [
-          9,  18,  -7, -44,
-        -34, -42, -28,  -5,
-         36
-      ],
-      [
-         10,  37,  20, -30,
-        -64, -13, -19,  36,
-         43
-      ],
-      [
-         55,  58, 48, -35,
-        -74, -44,  5,  49,
-         50
-      ],
-      [
-         89,  85,  30, -24,
-        -60, -39, -27,   1,
-         32
-      ],
-      [
-        105,  47,  39, -24,
-        -48, -60, -25, -32,
-        -14
-      ],
-      [
-        101,  79,  34,   7,
-        -59, -44, -43, -17,
-        -11
-      ],
-      [
-         92, 45,  43,  11,
-        -38, -9, -25, -18,
-         34
-      ],
-      [
-        45, 32,  0,  4, -11,
-        18,  2, 31, 50
-      ],
-      [
-          7, -16, -54, -28,
-        -20,  29,  77,  58,
-         87
-      ]
-    ]
-    let matrixUnit = 30;
-    
+export default function GameBox() {
+    const N = 7;
+    const RANDOM_INITIAL_RANGE = 100;
+    const MATRIX_LENGTH = Math.pow(2, N) + 1;
+
+    const heightMatrix = diamondSquare(generateMatrix())
+    console.log(heightMatrix)
+    let matrixUnit = 10;
+
     const setup = (p5, canvasParentRef) => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef)
     }
-    
+
     const draw = p5 => {
         p5.background(220, 220, 220)
         let x = 0;
         let y = 0;
-        for (let line of heightMatrix){
-            for (let heightValue of line){
+        for (let line of heightMatrix) {
+            for (let heightValue of line) {
+                p5.noStroke()
                 p5.fill(assignColor(heightValue))
                 p5.square(x, y, matrixUnit)
                 x += matrixUnit;
@@ -68,18 +28,116 @@ export default function GameBox(){
             x = 0;
         }
     }
-    
-    function assignColor(heightValue){
-        if (heightValue > 80) return 'white'
-        if (heightValue > 60) return 'orange'
+
+    function assignColor(heightValue) {
+        if (heightValue > 98) return 'white'
+        if (heightValue > 90) return 'saddlebrown'
+        if (heightValue > 80) return 'peru'
+        if (heightValue > 60) return 'burlywood'
         if (heightValue > 40) return 'beige'
         if (heightValue > 20) return 'lightgreen'
-        if (heightValue > 0) return'lightyellow'
+        if (heightValue > 0) return 'lightyellow'
         if (heightValue > -20) return 'aliceblue'
         if (heightValue > -40) return 'cyan'
         if (heightValue > -60) return 'darkcyan'
         if (heightValue > -80) return 'darkblue'
         return 'black'
+    }
+
+    function randomInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function generateMatrix() {
+        const matrix = new Array(MATRIX_LENGTH)
+            .fill(0)
+            .map(() => new Array(MATRIX_LENGTH).fill(null));
+
+        matrix[0][MATRIX_LENGTH - 1] = randomInRange(0, RANDOM_INITIAL_RANGE);
+        matrix[MATRIX_LENGTH - 1][0] = randomInRange(0, RANDOM_INITIAL_RANGE);
+        matrix[0][0] = randomInRange(0, RANDOM_INITIAL_RANGE);
+        matrix[MATRIX_LENGTH - 1][MATRIX_LENGTH - 1] = randomInRange(
+            0,
+            RANDOM_INITIAL_RANGE
+        );
+
+        return matrix;
+    }
+
+    function diamondSquare(matrix) {
+        let chunkSize = MATRIX_LENGTH - 1;
+        let randomFactor = RANDOM_INITIAL_RANGE;
+
+        while (chunkSize > 1) {
+            calculateSquare(matrix, chunkSize, randomFactor)
+
+            calculateDiamond(matrix, chunkSize, randomFactor)
+
+            chunkSize /= 2;
+            randomFactor /= 2;
+        }
+
+        return matrix;
+    }
+
+    function calculateDiamond(matrix, chunkSize, randomFactor) {
+        let sumComponents = 0;
+        let sum = 0;
+        for (let i = 0; i < matrix.length - 1; i += chunkSize) {
+            for (let j = 0; j < matrix.length - 1; j += chunkSize) {
+                const BOTTOM_RIGHT = matrix[j + chunkSize]
+                    ? matrix[j + chunkSize][i + chunkSize]
+                    : null;
+                const BOTTOM_LEFT = matrix[j + chunkSize]
+                    ? matrix[j + chunkSize][i]
+                    : null;
+                const TOP_LEFT = matrix[j][i];
+                const TOP_RIGHT = matrix[j][i + chunkSize];
+                const { count, sum } = [
+                    BOTTOM_RIGHT,
+                    BOTTOM_LEFT,
+                    TOP_LEFT,
+                    TOP_RIGHT
+                ].reduce(
+                    (result, value) => {
+                        if (isFinite(value) && value != null) {
+                            result.sum += value;
+                            result.count += 1;
+                        }
+                        return result;
+                    },
+                    { sum: 0, count: 0 }
+                );
+                const changed = { row: j + chunkSize / 2, column: i + chunkSize / 2 };
+                matrix[changed.row][changed.column] =
+                    Math.floor(sum / count + randomInRange(-randomFactor, randomFactor));
+            }
+        }
+        return matrix;
+    }
+
+    function calculateSquare(matrix, chunkSize, randomFactor) {
+        const half = chunkSize / 2;
+        for (let y = 0; y < matrix.length; y += half) {
+            for (let x = (y + half) % chunkSize; x < matrix.length; x += chunkSize) {
+                const BOTTOM = matrix[y + half] ? matrix[y + half][x] : null;
+                const LEFT = matrix[y][x - half];
+                const TOP = matrix[y - half] ? matrix[y - half][x] : null;
+                const RIGHT = matrix[y][x + half];
+                const { count, sum } = [BOTTOM, LEFT, TOP, RIGHT].reduce(
+                    (result, value) => {
+                        if (isFinite(value) && value != null) {
+                            result.sum += value;
+                            result.count += 1;
+                        }
+                        return result;
+                    },
+                    { sum: 0, count: 0 }
+                );
+                matrix[y][x] = Math.floor(sum / count + randomInRange(-randomFactor, randomFactor));
+            }
+        }
+        return matrix;
     }
 
     return <Sketch setup={setup} draw={draw} />
