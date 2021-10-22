@@ -50,6 +50,7 @@ const MATRIX_LENGTH = Math.pow(2, N) + 1;
             0,
             RANDOM_INITIAL_RANGE
         );
+        
         matrix[0] = side;
         return matrix; 
         }
