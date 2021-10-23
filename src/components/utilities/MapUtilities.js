@@ -1,5 +1,5 @@
 
-const N = 5;
+const N = 4;
 const RANDOM_INITIAL_RANGE = 100;
 const MATRIX_LENGTH = Math.pow(2, N) + 1;
 
@@ -22,8 +22,8 @@ function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function generateMatrix(side) {
-    if (!side){
+function generateMatrix(matrixtop, matrixbottom) {
+    
         const matrix = new Array(MATRIX_LENGTH)
         .fill(0)
         .map(() => new Array(MATRIX_LENGTH).fill(null));
@@ -36,23 +36,11 @@ function generateMatrix(side) {
             RANDOM_INITIAL_RANGE
             );
             
+            if (matrixtop) matrix[0] = matrixtop;
+            if (matrixbottom) matrix[MATRIX_LENGTH - 1] = matrixbottom;
+
             return matrix;
-        } else {
-            const matrix = new Array(MATRIX_LENGTH)
-            .fill(0)
-            .map(() => new Array(MATRIX_LENGTH).fill(null));
-            
-            matrix[0][MATRIX_LENGTH - 1] = randomInRange(0, RANDOM_INITIAL_RANGE);
-            matrix[MATRIX_LENGTH - 1][0] = randomInRange(0, RANDOM_INITIAL_RANGE);
-            matrix[0][0] = randomInRange(0, RANDOM_INITIAL_RANGE);
-            matrix[MATRIX_LENGTH - 1][MATRIX_LENGTH - 1] = randomInRange(
-                0,
-                RANDOM_INITIAL_RANGE
-                );
-                
-                matrix[0] = side;
-                return matrix; 
-            }
+        
         }
         
         function diamondSquare(matrix) {
