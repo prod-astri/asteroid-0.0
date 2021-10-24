@@ -22,7 +22,7 @@ function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function generateMatrix(matrixtop, matrixbottom) {
+function generateMatrix(matrixtop, matrixbottom, matrixleft, matrixright) {
     
         const matrix = new Array(MATRIX_LENGTH)
         .fill(0)
@@ -38,7 +38,16 @@ function generateMatrix(matrixtop, matrixbottom) {
             
             if (matrixtop) matrix[0] = matrixtop;
             if (matrixbottom) matrix[MATRIX_LENGTH - 1] = matrixbottom;
-
+            if (matrixleft){
+                for (let i in matrixleft){
+                    matrix[i][0] = matrixleft[i]
+                }
+            }
+            if (matrixright){
+                for (let i in matrixright){
+                    matrix[i][MATRIX_LENGTH - 1] = matrixright[i]
+                }
+            }
             return matrix;
         
         }
