@@ -3,21 +3,6 @@ const N = 5;
 const RANDOM_INITIAL_RANGE = 100;
 const MATRIX_LENGTH = Math.pow(2, N) + 1;
 
-function assignColor(heightValue) {
-    if (heightValue > 130) return 'white'
-    if (heightValue > 110) return 'saddlebrown'
-    if (heightValue > 90) return 'peru'
-    if (heightValue > 70) return 'burlywood'
-    if (heightValue > 40) return 'beige'
-    if (heightValue > 20) return 'lightgreen'
-    if (heightValue > 0) return 'lightyellow'
-    if (heightValue > -10) return 'aliceblue'
-    if (heightValue > -30) return 'cyan'
-    if (heightValue > -50) return 'darkcyan'
-    if (heightValue > -70) return 'darkblue'
-    return 'black'
-}
-
 function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -135,21 +120,4 @@ function calculateSquare(matrix, chunkSize, randomFactor) {
     return matrix;
 }
 
-function rightEdge (matrix){
-    let i = matrix[0].length - 1
-    let edge = [];
-    for (let line of matrix){
-        edge.push(line[i])
-    }
-    return edge;
-}
-
-function leftEdge (matrix){
-    let edge = [];
-    for (let line of matrix){
-        edge.push(line[0])
-    }
-    return edge;
-}
-
-export { generateMatrix, diamondSquare, assignColor, rightEdge, leftEdge }
+export { generateMatrix, diamondSquare}

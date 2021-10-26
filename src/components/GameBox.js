@@ -1,26 +1,11 @@
 import Sketch from 'react-p5'
-import {assignColor, diamondSquare, generateMatrix} from './utilities/MapUtilities';
+import {assignColor, rightEdge, leftEdge, diamondSquare, generateMatrix} from './utilities/MapUtilities';
 
 export default function GameBox() {
     
 
     const heightMatrix = diamondSquare(generateMatrix())
-    function rightEdge (matrix){
-        let i = matrix[0].length - 1
-        let edge = [];
-        for (let line of matrix){
-            edge.push(line[i])
-        }
-        return edge;
-    }
-
-    function leftEdge (matrix){
-        let edge = [];
-        for (let line of matrix){
-            edge.push(line[0])
-        }
-        return edge;
-    }
+    
 
     const bottomHeightMatrix = diamondSquare(generateMatrix(heightMatrix[heightMatrix.length-1]))
     const rightHeightMatrix =  smooth(diamondSquare(generateMatrix(null, null, rightEdge(heightMatrix))))
