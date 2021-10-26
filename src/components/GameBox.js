@@ -10,37 +10,44 @@ export default function GameBox() {
     let matrixUnit = 10;
 
     function smooth (matrix) {
-        const newMatrix = matrix.map(line => line.map(el => null))
-        // for (let row in matrix){
-        //     for (let col in row){
-        //         let sum = 0;
-        //         let counter = 0;
-        //         let adjacents = [];
-        //             if (matrix[row - 1][col - 1]) adjacents.push(matrix[row - 1][col - 1])
-        //             if (matrix[row + 1][col - 1]) adjacents.push(matrix[row + 1][col - 1])
-        //             if (matrix[row + 1][col + 1]) adjacents.push(matrix[row + 1][col + 1])
-        //             if (matrix[row - 1][col + 1]) adjacents.push(matrix[row - 1][col + 1])
-        //             if (matrix[row - 1][col]) adjacents.push(matrix[row - 1][col])
-        //             if (matrix[row][col + 1]) adjacents.push(matrix[row][col + 1])
-        //             if (matrix[row + 1][col]) adjacents.push(matrix[row + 1][col])
-        //             if (matrix[row][col - 1]) adjacents.push(matrix[row][col - 1])
+        const newMatrix = [...matrix].map(line =>  line.map(el => 0))
+        console.log(newMatrix, '<<<<<<<<<<<<<<<<')
+        for (let row in matrix){
+            for (let col in matrix[row]){
+                console.log(row, col)
+                let sum = 0;
+                let counter = 0;
+                let adjacents = [];
                 
-        //         for (let el of adjacents){
-        //             if (el){
-        //                 sum += el;
-        //                 counter += 1;
-        //             }
-        //         }
-        //         sum += matrix[row][col] * FACTOR
-        //         counter += FACTOR
-        //         newMatrix[row][col] = sum / counter;
-        //     }
-        // }
-        return newMatrix
+                    // if (!matrix[row - 1][col - 1]) adjacents.push(9)
+                    // if (matrix[row + 1][col - 1]) adjacents.push(matrix[row + 1][col - 1])
+                    // if (matrix[row + 1][col + 1]) adjacents.push(matrix[row + 1][col + 1])
+                    // if (matrix[row - 1][col + 1]) adjacents.push(matrix[row - 1][col + 1])
+                    // if (matrix[row - 1][col]) adjacents.push(matrix[row - 1][col])
+                    // if (matrix[row][col + 1]) adjacents.push(matrix[row][col + 1])
+                    // if (matrix[row + 1][col]) adjacents.push(matrix[row + 1][col])
+                    // if (matrix[row][col - 1]) adjacents.push(matrix[row][col - 1])
+            
+                    if (matrix[row][col]) adjacents.push(-140)
+                for (let el of adjacents){
+                        sum += el;
+                        counter += 1;
+                }
+                sum += matrix[row][col] * FACTOR
+                counter += FACTOR
+                newMatrix[row][col] = sum / counter;
+            }
+        }
+        // console.log(newMatrix)
+        return newMatrix;
+        
     }
 
     const setup = (p5, canvasParentRef) => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef)
+        // const heightMatrix = diamondSquare(generateMatrix())
+        // const smoothHeightMatrix = smooth(heightMatrix)
+       
     }
 
     function draw(p5) {
