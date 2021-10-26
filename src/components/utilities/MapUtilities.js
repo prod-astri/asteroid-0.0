@@ -1,5 +1,5 @@
 
-const N = 4;
+const N = 8;
 const RANDOM_INITIAL_RANGE = 100;
 const MATRIX_LENGTH = Math.pow(2, N) + 1;
 

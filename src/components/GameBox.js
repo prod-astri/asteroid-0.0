@@ -6,16 +6,26 @@ export default function GameBox() {
 
     const heightMatrix = diamondSquare(generateMatrix())
     function rightEdge (matrix){
+        let i = matrix[0].length - 1
         let edge = [];
         for (let line of matrix){
-            edge.push(line[line.length - 1])
+            edge.push(line[i])
         }
         return edge;
     }
+
+    function leftEdge (matrix){
+        let edge = [];
+        for (let line of matrix){
+            edge.push(line[0])
+        }
+        return edge;
+    }
+
     const bottomHeightMatrix = diamondSquare(generateMatrix(heightMatrix[heightMatrix.length-1]))
     const rightHeightMatrix =  smooth(diamondSquare(generateMatrix(null, null, rightEdge(heightMatrix))))
     console.log(rightHeightMatrix)
-    let matrixUnit = 20;
+    let matrixUnit = 2;
 
     function smooth (matrix) {
         return matrix
